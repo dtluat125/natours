@@ -7,15 +7,12 @@ import { displayMap } from './mapbox';
 import { updateSettings } from './updateSettings';
 import { bookTour } from './stripe';
 
-dotenv.config({ path: '../../config.env' });
 const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
 const updateSettingsForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-settings');
 const bookTourBtn = document.querySelector('#book-tour');
-
-console.log(process.env);
 
 if (loginForm) {
   loginForm.addEventListener('submit', async (e) => {

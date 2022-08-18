@@ -155,7 +155,6 @@ tourSchema.post(/^find/, function (docs, next) {
 tourSchema.pre('aggregate', function (next) {
   if (!this.pipeline()[0].$geoNear) {
     this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
-    console.log('We still arrive here');
   }
   next();
 });
