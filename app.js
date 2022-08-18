@@ -20,6 +20,7 @@ const globalErrorHandler = require('./controllers/errorController');
 //1 Middleware
 // Set security https header
 app.use(compression());
+app.enable('trust proxy');
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));

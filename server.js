@@ -8,17 +8,7 @@ const DB = process.env.DATABASE.replace(
   '<PASSWORD>',
   process.env.DATABASE_PASSWORD
 );
-process.on('unhandledRejection', (err) => {
-  console.log(err.name, err.message);
-  console.log('UNHANDLED REJECTION');
-  process.exit(1);
-});
 
-process.on('uncaughtException', (err) => {
-  console.log('Uncaught exception');
-  console.log(err);
-  process.exit(1);
-});
 mongoose
   .connect(DB, {
     useNewUrlParser: true,
@@ -32,6 +22,28 @@ mongoose
 
 const port = process.env.PORT || 3000;
 // console.log(process.env);
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`App running on port ${port}...`);
+});
+
+process.on('unhandledRejection', (err) => {
+  console.log(err.name, err.message);
+  console.log('UNHANDLED REJECTION');
+  server.close(() => {
+    process.exit(1);
+  });
+});
+
+process.on('uncaughtException', (err) => {
+  console.log('Uncaught exception');
+  server.close(() => {
+    process.exit(1);
+  });
+});
+
+process.on('SIGTERM', () => {
+  console.log('SIGTERM RECEIVED, shutting down!');
+  server.close(() => {
+    console.log('Process terminated')
+  });
 });
