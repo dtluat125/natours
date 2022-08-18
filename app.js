@@ -8,6 +8,8 @@ const hpp = require('hpp');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const cors = require('cors');
+
 const app = express();
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
@@ -24,6 +26,10 @@ app.enable('trust proxy');
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
+
+// Implement CORS
+app.use(cors());
+app.options('*', cors());
 
 app.use(
   helmet({
