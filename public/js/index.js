@@ -1,7 +1,5 @@
 /* eslint-disable no-undef */
-import dotenv from 'dotenv';
-
-import { login, logout } from './login';
+import { login, logout, signup } from './auth';
 import '@babel/polyfill';
 import { displayMap } from './mapbox';
 import { updateSettings } from './updateSettings';
@@ -9,6 +7,7 @@ import { bookTour } from './stripe';
 
 const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
+const signupForm = document.querySelector('.form--signup');
 const logOutBtn = document.querySelector('.nav__el--logout');
 const updateSettingsForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-settings');
@@ -23,6 +22,20 @@ if (loginForm) {
     submitBtn.innerHTML = 'Logging in...';
     await login(email, password);
     submitBtn.innerHTML = 'Login';
+  });
+}
+
+if (signupForm) {
+  signupForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const name = document.getElementById('name').value;
+    const passwordConfirm = document.getElementById('passwordConfirm').value;
+    const submitBtn = signupForm.querySelector('button');
+    submitBtn.innerHTML = 'Signing up...';
+    await signup(email, name, password, passwordConfirm);
+    submitBtn.innerHTML = 'Sign up';
   });
 }
 

@@ -17,7 +17,7 @@ const createAndSendToken = (user, statusCode, req, res) => {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 50 * 1000
     ),
-    secure: req.secure || req.headers('x-forwarded-proto' === 'https'),
+    secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
     httpOnly: true,
   };
   res.cookie('jwt', token, cookieOptions);
@@ -31,6 +31,9 @@ const createAndSendToken = (user, statusCode, req, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
+  const existEmail = await User.findOne({ email: req.body.email });
+  if (existEmail) return next(new AppError('Email already taken!', 409));
+
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
